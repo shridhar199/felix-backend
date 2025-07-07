@@ -7,7 +7,8 @@
     "nodemon": "nodemon --watch src --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node index.ts"
+    "dev": "ts-node index.ts",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -22,17 +23,28 @@
   "homepage": "https://github.com/shridhar199/felix-backend#readme",
   "description": "",
   "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
     "@types/node": "^24.0.10",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.30.1",
+    "globals": "^16.3.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.50.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.1"
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "pg": "^8.16.3",
     "stellar-sdk": "^13.3.0"
-  }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  } 
 }
