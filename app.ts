@@ -18,9 +18,11 @@ app.use(cors({
 }));
 
 
-//app.options("*", cors({ origin: allowedOrigins, credentials: true }));
+app.options("/", cors({ origin: allowedOrigins, credentials: true }));
 
 app.use(express.json());
 
-
+app.get("/", (req, res) => {
+    res.send("Welcome to the FELIX Backend!");
+});
 export default app;
