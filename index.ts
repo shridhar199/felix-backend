@@ -1,6 +1,9 @@
-const greet = (name: string): string => {
-  return `Hello, ${name}!`
-}
+import app from './app';
+import dotenv from 'dotenv';
+dotenv.config();
 
-console.log(greet("World"))
-  
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
