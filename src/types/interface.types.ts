@@ -6,3 +6,9 @@ export interface payment {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface CreateUserDTO {
+  email: string;
+  fullName: string;
+  createdBy?: string;
+}
