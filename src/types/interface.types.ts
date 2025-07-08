@@ -8,6 +8,7 @@ export interface payment {
 }
 
 export interface CreateUserDTO {
+  username: string;
   email: string;
   fullName: string;
   createdBy?: string;

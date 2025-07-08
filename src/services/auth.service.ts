@@ -5,50 +5,57 @@ import { keycloakConfig } from '../config/keycloak.config';
 import { insertUserToDB } from '../dao/auth.dao';
 import { CreateUserDTO } from '../types/interface.types';
 
-export async function createUserService(dto: CreateUserDTO) {
-  const userId = uuidv4();
+export class AuthService {
 
-  const tokenRes = await axios.post(
-    `${keycloakConfig.keycloakUrl}/realms/master/protocol/openid-connect/token`,
-    new URLSearchParams({
-      grant_type: 'password',
-      client_id: 'admin-cli',
-      username: 'admin',
-      password: 'KcAdmin'
-    }),
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-  );
+  public async createUser(dto: CreateUserDTO) {
+    const userId = uuidv4();
 
-  const token = tokenRes.data.access_token;
+    const tokenRes = await axios.post(
+      `${keycloakConfig.keycloakUrl}/realms/master/protocol/openid-connect/token`,
+      new URLSearchParams({
+        grant_type: 'password',
+        client_id: 'admin-cli',
+        username: 'admin',
+        password: 'KcAdmin'
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    );
 
-  await axios.post(
-    `${keycloakConfig.keycloakUrl}/admin/realms/${keycloakConfig.realm}/users`,
-    {
-      username: dto.email,
-      email: dto.email,
-      enabled: true,
-      attributes: {
-        full_name: dto.fullName,
+    const token = tokenRes.data.access_token;
+
+    await axios.post(
+      `${keycloakConfig.keycloakUrl}/admin/realms/${keycloakConfig.realm}/users`,
+      {
+        username: dto.email,
+        email: dto.email,
+        enabled: true,
+        attributes: {
+          full_name: dto.fullName,
+        },
       },
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
-  const stellarPair = Keypair.random();
+    const stellarPair = Keypair.random();
 
-  await insertUserToDB({
-    id: userId,
-    email: dto.email,
-    full_name: dto.fullName,
-    created_by: dto.createdBy,
-  });
+    await insertUserToDB({
+      id: userId,
+      email: dto.email,
+      username: dto.username,
+      created_by: dto.createdBy,
+    });
 
-  return {
-    userId,
-    email: dto.email,
-    stellarPublicKey: stellarPair.publicKey(),
-    stellarSecretKey: stellarPair.secret(), // avoid returning in prod
-  };
+    return {
+      userId,
+      email: dto.email,
+      stellarPublicKey: stellarPair.publicKey(),
+      stellarSecretKey: stellarPair.secret(), 
+    };
+  }
 }
