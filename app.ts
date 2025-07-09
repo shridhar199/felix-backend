@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './src/routes/auth.routes';
+import userRoutes from './src/routes/users.routes';
 dotenv.config();
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
@@ -24,6 +25,7 @@ app.options("/", cors({ origin: allowedOrigins, credentials: true }));
 
 app.use(express.json());
 app.use('/api/v1', authRoutes);
+app.use('/api/v1', userRoutes);
 app.get("/", (req, res) => {
     res.send("Welcome to the FELIX Backend!");
 });
